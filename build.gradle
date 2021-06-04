@@ -1,0 +1,55 @@
+// El bloque buildscript es para configurar a Gradle
+
+buildscript {
+    repositories
+            {
+            mavenLocal()
+            mavenCentral()
+            jcenter()
+             }
+    dependencies
+            {
+            // De aqui viene el plugin aggregator que esta en la linea 4
+            classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.80")
+            }
+}
+
+plugins {
+    id 'java-library'
+}
+
+// Para agregar un comando que se llama aggregate, que es de Serenity y es para construir el reporte
+apply plugin: 'net.serenity-bdd.aggregator'
+
+repositories
+        {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        }
+
+dependencies
+        {
+        // Dependencias para poder automatizar con Serenity
+        compile 'net.serenity-bdd:serenity-junit:2.0.80'
+        compile 'net.serenity-bdd:serenity-cucumber:1.9.45'
+        compile 'net.serenity-bdd:serenity-core:2.0.80'
+        compile 'org.slf4j:slf4j-simple:1.7.7'
+        compile 'com.google.guava:guava:23.0'
+        }
+
+// Configuración de comandos de ejecución d epruebas de Gradle
+test
+        {
+        //Ignorar los fallos es ejecutar todas las pruebas asi alguna falle
+        ignoreFailures = true
+        }
+
+// Configurar el encoding del proyecto
+tasks.withType(JavaCompile)
+        {
+        options.encoding = 'UTF-8'
+        }
+
+// Continue asi falle alguna tarea de Gradle
+gradle.startParameter.continueOnFailure = true
